@@ -6,62 +6,42 @@ export const Home = () => {
     const { store, dispatch } = useGlobalReducer();
 
     useEffect(() => {
-        // ── Fetch Characters ──
-        const fetchCharacters = async () => {
+        const fetchAll = async () => {
             try {
-                const response = await fetch("https://www.swapi.tech/api/people?page=1&limit=10");
-                const data = await response.json();
-                dispatch({ type: "set_characters", payload: data.results });
-            } catch (error) {
-                console.error("Error fetching characters:", error);
-            }
+                // ── Characters ──
+                const resChar = await fetch("https://www.swapi.tech/api/people?page=1&limit=10");
+                const dataChar = await resChar.json();
+                // SWAPI returns name inside properties for some endpoints
+                // results array has: { uid, name, url }
+                dispatch({ type: "set_characters", payload: dataChar.results });
+            } catch (e) { console.error("Characters error:", e); }
+
+            try {
+                // ── Planets ──
+                const resPlan = await fetch("https://www.swapi.tech/api/planets?page=1&limit=10");
+                const dataPlan = await resPlan.json();
+                dispatch({ type: "set_planets", payload: dataPlan.results });
+            } catch (e) { console.error("Planets error:", e); }
+
+            try {
+                // ── Vehicles ──
+                const resVeh = await fetch("https://www.swapi.tech/api/vehicles?page=1&limit=10");
+                const dataVeh = await resVeh.json();
+                dispatch({ type: "set_vehicles", payload: dataVeh.results });
+            } catch (e) { console.error("Vehicles error:", e); }
         };
 
-        // ── Fetch Planets ──
-        const fetchPlanets = async () => {
-            try {
-                const response = await fetch("https://www.swapi.tech/api/planets?page=1&limit=10");
-                const data = await response.json();
-                dispatch({ type: "set_planets", payload: data.results });
-            } catch (error) {
-                console.error("Error fetching planets:", error);
-            }
-        };
-
-        // ── Fetch Vehicles ──
-        const fetchVehicles = async () => {
-            try {
-                const response = await fetch("https://www.swapi.tech/api/vehicles?page=1&limit=10");
-                const data = await response.json();
-                dispatch({ type: "set_vehicles", payload: data.results });
-            } catch (error) {
-                console.error("Error fetching vehicles:", error);
-            }
-        };
-
-        fetchCharacters();
-        fetchPlanets();
-        fetchVehicles();
+        fetchAll();
     }, []);
-
-    const getImageUrl = (type, uid) => {
-        const typeMap = {
-            characters: "characters",
-            planets: "planets",
-            vehicles: "vehicles"
-        };
-        return `https://starwars-visualguide.com/assets/img/${typeMap[type]}/${uid}.jpg`;
-    };
 
     const renderSection = (title, items, type) => (
         <div className="mb-5">
-            <h2 className="text-warning mb-3">{title}</h2>
-            <div
-                className="d-flex gap-3 pb-3"
-                style={{ overflowX: "auto" }}
-            >
+            <h2 className="text-warning mb-3 border-bottom border-warning pb-2">
+                {title}
+            </h2>
+            <div className="d-flex gap-3 pb-3" style={{ overflowX: "auto" }}>
                 {items.length === 0 ? (
-                    <p className="text-muted">Loading...</p>
+                    <p className="text-muted fst-italic">Loading {title.toLowerCase()}...</p>
                 ) : (
                     items.map((item) => (
                         <Card
@@ -69,7 +49,6 @@ export const Home = () => {
                             uid={item.uid}
                             name={item.name}
                             type={type}
-                            imageUrl={getImageUrl(type, item.uid)}
                         />
                     ))
                 )}
@@ -79,13 +58,12 @@ export const Home = () => {
 
     return (
         <div
-            className="container-fluid px-4 py-5"
+            className="px-4 py-5"
             style={{ backgroundColor: "#1a1a2e", minHeight: "100vh", color: "white" }}
         >
             <h1 className="text-center text-warning mb-5 display-4 fw-bold">
                 Star Wars Blog
             </h1>
-
             {renderSection("Characters", store.characters, "characters")}
             {renderSection("Planets", store.planets, "planets")}
             {renderSection("Vehicles", store.vehicles, "vehicles")}

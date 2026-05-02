@@ -19,7 +19,9 @@ export const Detail = () => {
                 setLoading(false);
             }
         };
+        
         fetchDetail();
+        
     }, [type, uid]);
 
     const getImageUrl = () => {

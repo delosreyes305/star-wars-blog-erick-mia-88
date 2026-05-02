@@ -9,7 +9,7 @@ export const Footer = () => {
 
                     {/* Brand */}
                     <div className="col-md-4 text-center text-md-start mb-3 mb-md-0">
-                        <span className="fs-5 fw-bold text-warning"><i class="fa-solid fa-jedi fa-2xl"></i></span>
+                        <span className="fs-5 fw-bold text-warning"><i className="fa-solid fa-jedi fa-2xl"></i></span>
                         <p className="small text-white mb-0 mt-1">
                             A galaxy of data at your fingertips.
                         </p>
