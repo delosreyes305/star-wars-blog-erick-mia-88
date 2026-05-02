@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-const PLACEHOLDER = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Star-wars-logo-new-tall.jpg/640px-Star-wars-logo-new-tall.jpg";
+import avatarCharacter from "../assets/img/avatar-profile.png";
+import avatarPlanet from "../assets/img/avatar-planet.png";
+import avatarVehicle from "../assets/img/avatar-vehicles.png";
+
+const PLACEHOLDERS = {
+    characters: avatarCharacter,
+    planets: avatarPlanet,
+    vehicles: avatarVehicle
+};
 
 export const Card = ({ uid, name, type }) => {
     const { store, dispatch } = useGlobalReducer();
@@ -30,7 +38,7 @@ export const Card = ({ uid, name, type }) => {
             }}
         >
             <img
-                src={PLACEHOLDER}
+                src={PLACEHOLDERS[type]}
                 className="card-img-top"
                 alt={name}
                 style={{ height: "140px", objectFit: "cover" }}

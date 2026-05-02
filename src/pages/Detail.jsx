@@ -10,7 +10,9 @@ export const Detail = () => {
     useEffect(() => {
         const fetchDetail = async () => {
             try {
-                const response = await fetch(`https://www.swapi.tech/api/${type}/${uid}`);
+                const endpointMap = { characters: "people", planets: "planets", vehicles: "vehicles" };
+                const endpoint = endpointMap[type] || type;
+                const response = await fetch(`https://www.swapi.tech/api/${endpoint}/${uid}`);
                 const data = await response.json();
                 setItem(data.result);
             } catch (error) {
@@ -19,9 +21,9 @@ export const Detail = () => {
                 setLoading(false);
             }
         };
-        
+
         fetchDetail();
-        
+
     }, [type, uid]);
 
     const getImageUrl = () => {
