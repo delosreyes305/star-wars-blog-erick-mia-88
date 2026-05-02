@@ -51,7 +51,7 @@ export const Navbar = () => {
                                     className="btn btn-sm btn-outline-danger py-0 px-1 ms-2"
                                     onClick={() => handleRemove(fav.uid, fav.type)}
                                 >
-                                    🗑
+                                    <i className="fa-regular fa-trash-can" style={{color: "rgb(212, 0, 0)"}}></i>
                                 </button>
                             </li>
                         ))
